@@ -68,7 +68,11 @@ class Wraith::GalleryGenerator
   end
 
   def get_path(category)
-    wraith.paths[category]["path"] || wraith.paths[category]
+    if wraith.paths[category].is_a?(String)
+      wraith.paths[category]
+    else
+      wraith.paths[category].fetch('path')
+    end
   end
 
   def get_group_from_match(match)
@@ -121,7 +125,7 @@ class Wraith::GalleryGenerator
   def sort_by_diffs(dirs)
     dirs.sort_by do |_category, sizes|
       size = select_size_with_biggest_diff sizes
-      -1 * size[1][:data]
+      -1 * size[1][:data] if $size
     end
   end
 

@@ -2,6 +2,7 @@
 shots/
 shots_chrome/
 shots_history/
+shots_base/
 data.txt
 .DS_Store
 *.swp
