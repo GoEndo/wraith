@@ -1,13 +1,16 @@
-FROM ruby:2.1.2
+FROM ruby:2.5.1
 
 # some of ruby's build scripts are written in ruby
 # we purge this later to make sure our final image uses what we just built
-RUN apt-get update
+RUN apt-get update; \
+    apt-get install -y curl gnupg; \
+    curl -sL https://deb.nodesource.com/setup_8.x | bash -
 RUN echo "export phantomjs=/usr/bin/phantomjs" > .bashrc
-RUN apt-get install -y libfreetype6 libfontconfig1 nodejs npm libnss3-dev libgconf-2-4
-RUN ln -s /usr/bin/nodejs /usr/bin/node
+RUN apt-get install -y libfreetype6 libfontconfig1 nodejs libnss3-dev libgconf-2-4
+#RUN ln -s /usr/bin/nodejs /usr/bin/node
 RUN npm install npm
-RUN npm install -g phantomjs@2.1.7 casperjs@1.1.1
+RUN npm install -g phantomjs --unsafe-perm
+RUN npm install -g casperjs
 RUN gem install wraith --no-rdoc --no-ri
 RUN gem install aws-sdk --no-rdoc --no-ri
 
