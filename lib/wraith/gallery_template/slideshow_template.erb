@@ -3,7 +3,8 @@
 <head>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
+  <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>-->
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.cycle/3.03/jquery.cycle.all.min.js"></script>
   <style type="text/css">
     body {
@@ -119,7 +120,7 @@
         before: function (curr, next, opts) {
           $('.current').removeClass('current');
           var $next = $(next);
-          var path = $next.find('.path').attr('name');
+          var path = encodeURI($next.find('.path').attr('name'));
           $.each($('.list-group .list-group-item a'), function() {
             if ($(this).attr('href').substring(1) == path) {
               $(this).parent().addClass('checked');
@@ -142,7 +143,7 @@
       $('.list-group .list-group-item a').unbind().on('click', function(){
         var href = $(this).attr('href').substring(1);
 
-        slideshow.cycle($('.slide.'+href+':first').index());
+        slideshow.cycle($('.slide.'+href.replace(/[\.\%]/g, '_')+':first').index());
       })
 
       $('.shot').unbind().on('click', function(e){
@@ -178,8 +179,19 @@
           </div>
           <div class="panel-heading">Pages:</div>
           <ul class="list-group list-group-flush">
-            <% directories.keys.each do |dir| %>
-            <li class="list-group-item"><a href="#<%=path%><%=dir%>"><span>/<%=dir.gsub('__', '/')%></span></a></li>
+            <% directories.each do |dir, sizes| %>
+              <% size = sizes.max_by { |_size, dict| dict[:data] } %>
+              <% diff_size = size[1][:data] if size %>
+
+			  <% if threshold.nil? %>
+				<li class="list-group-item"><a href="#<%= ERB::Util.url_encode path%><%= ERB::Util.url_encode dir%>"><span class="text-muted">/<%=dir.gsub('__', '/')%></span></a></li>
+			  <% else %>
+			  <% if diff_size&. > threshold %>
+				<li class="list-group-item"><a href="#<%= ERB::Util.url_encode path%><%= ERB::Util.url_encode dir%>"><span class="threshold">/<%=dir.gsub('__', '/')%></span></a></li>
+			  <% else %>
+				<li class="list-group-item"><a href="#<%= ERB::Util.url_encode path%><%= ERB::Util.url_encode dir%>"><span>/<%=dir.gsub('__', '/')%></span></a></li>
+			  <% end %>
+			  <% end %>
             <% end %>
           </ul>
         </div>
@@ -190,8 +202,9 @@
           <div class="slideshow pull-left col-sm-10">
             <% directories.each do |dir, sizes| %>
             <% sizes.to_a.sort.each do |size, files| %>
-            <div class="row slide <%= dir %>">
-              <a class="path" name="<%= dir %>"></a>
+            <% dir_sub = (ERB::Util.url_encode dir).gsub(/[\.\%]/,  '_') %>
+            <div class="row slide <%= dir_sub %>">
+              <a class="path" name="<%= ERB::Util.url_encode path%><%= ERB::Util.url_encode dir%>"></a>
               <div class="col-sm-12 text-center">
                 <% if threshold.nil? %>
                 <h4><%=size%>px - /<%= dir.gsub('__', '/') %></h4>
