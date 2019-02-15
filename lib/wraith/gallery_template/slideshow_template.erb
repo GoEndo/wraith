@@ -181,9 +181,9 @@
           <ul class="list-group list-group-flush">
             <% directories.each do |dir, sizes| %>
               <% size = sizes.max_by { |_size, dict| dict[:data] } %>
-              <% diff_size = size[1][:data] if size %>
+              <% diff_size = size ? size[1][:data] : 0 %>
 
-			  <% if threshold.nil? %>
+			  <% if (threshold.nil?) || (diff_size&. == 0.0) %>
 				<li class="list-group-item"><a href="#<%= ERB::Util.url_encode path%><%= ERB::Util.url_encode dir%>"><span class="text-muted">/<%=dir.gsub('__', '/')%></span></a></li>
 			  <% else %>
 			  <% if diff_size&. > threshold %>
