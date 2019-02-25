@@ -1,0 +1,12 @@
+pipeline {
+    agent {
+        docker { image 'jyinspheal/wraith' }
+    }
+    stages {
+        stage('Test') {
+            steps {
+                sh 'wraith version'
+            }
+        }
+    }
+}
