@@ -1,3 +1,6 @@
+#!groovy
+
+@Library("ucp-global-library") _
 
 def gitBranch = "${env.BRANCH_NAME}"
 def credentialsId = 'c35e98d4-5b20-4607-854e-ddc6f0fd8ba4'
