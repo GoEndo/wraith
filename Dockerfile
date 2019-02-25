@@ -1,5 +1,8 @@
 FROM ruby:2.5.1
 
+RUN groupadd -g 999 appuser && \
+    useradd -r -u 999 -g appuser appuser
+
 # some of ruby's build scripts are written in ruby
 # we purge this later to make sure our final image uses what we just built
 RUN apt-get update; \
@@ -22,5 +25,7 @@ RUN apt-get install -y ttf-freefont ttf-mscorefonts-installer ttf-bitstream-vera
 
 # Make sure a recent (>6.7.7-10) version of ImageMagick is installed.
 RUN apt-get install -y imagemagick
+
+USER appuser
 
 ENTRYPOINT [ "wraith" ]
