@@ -3,7 +3,7 @@ def gitBranch = "${env.BRANCH_NAME}"
 def credentialsId = 'c35e98d4-5b20-4607-854e-ddc6f0fd8ba4'
 def gitHubRepoUrl = 'https://github.optum.com/gendo/wraith.git'
 
-def DOCKER_REPO = "mrrestwar"
+def DOCKER_REPO = "wraith"
 
 
 
@@ -17,7 +17,10 @@ node {
     }
 
     stage ('Build') {
-		def customImage = docker.build("wraith:${env.BUILD_ID}")
+		def DOCKER_IMAGE_PATH = "docker.optum.com/${env.DOCKER_ORG}/${DOCKER_REPO}:${DOCKER_REPO}-${env.BUILD_ID}-${env.BRANCH_NAME}"
+		sh "docker build --force-rm --no-cache --pull --rm=true -t ${DOCKER_IMAGE_PATH} ."
+		sh "docker login -u ${env.MAVEN_USER} -p ${env.MAVEN_PASS} -e ucpadmin@optum.com docker.optum.com"
+		sh "echo 'DOCKER_IMAGE_PATH :${DOCKER_IMAGE_PATH}'"
 
 		customImage.inside {
 			sh 'wraith info'
