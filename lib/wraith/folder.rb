@@ -75,7 +75,7 @@ class Wraith::FolderManager
   def tidy_shots_folder(dirs)
     if wraith.mode == "diffs_only"
       dirs.each do |folder_name, shot_info|
-        if shot_info.none? { |_k, v| v[:data] > 0 }
+        if shot_info.none? { |_k, v| v[:data]&. > 0 }
           FileUtils.rm_rf("#{wraith.directory}/#{folder_name}")
           dirs.delete(folder_name)
         end
