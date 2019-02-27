@@ -27,9 +27,10 @@ node {
 				sh "docker build --force-rm --no-cache --pull --rm=true -t ${DOCKER_IMAGE_PATH} -t docker.optum.com/${env.DOCKER_ORG}/${DOCKER_REPO}:latest ."
 				sh "docker login -u ${env.MAVEN_USER} -p ${env.MAVEN_PASS} docker.optum.com"
 				sh "echo 'DOCKER_IMAGE_PATH :${DOCKER_IMAGE_PATH}'"
-				sh "docker push docker.optum.com/${env.DOCKER_ORG}/${DOCKER_REPO}"
+				sh "docker push ${DOCKER_IMAGE_PATH}"
+				sh "docker push docker.optum.com/${env.DOCKER_ORG}/${DOCKER_REPO}:latest"
 				
-				sh "docker run -P docker.optum.com/${env.DOCKER_ORG}/${DOCKER_REPO} info"
+				sh "docker run -P ${env.DOCKER_ORG}/${DOCKER_REPO} info"
 			}
 		}
     }
