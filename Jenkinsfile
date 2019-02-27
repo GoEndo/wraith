@@ -29,7 +29,7 @@ node {
 				sh "echo 'DOCKER_IMAGE_PATH :${DOCKER_IMAGE_PATH}'"
 				sh "docker push docker.optum.com/${env.DOCKER_ORG}/${DOCKER_REPO}"
 				
-				sh "docker run -P ${env.DOCKER_ORG}/${DOCKER_REPO} info"
+				sh "docker run -P docker.optum.com/${env.DOCKER_ORG}/${DOCKER_REPO} info"
 			}
 		}
     }
