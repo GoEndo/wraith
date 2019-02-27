@@ -28,7 +28,6 @@ node {
 				sh "docker login -u ${env.MAVEN_USER} -p ${env.MAVEN_PASS} docker.optum.com"
 				sh "echo 'DOCKER_IMAGE_PATH :${DOCKER_IMAGE_PATH}'"
 				sh "docker push ${DOCKER_IMAGE_PATH}"
-				sh "docker images"
 				
 				sh "docker run -P ${env.DOCKER_ORG}/${DOCKER_REPO} info"
 			}
