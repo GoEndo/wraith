@@ -25,10 +25,10 @@ node {
 
 				def DOCKER_IMAGE_PATH = "docker.optum.com/${env.DOCKER_ORG}/${DOCKER_REPO}:${DOCKER_REPO}-${env.BUILD_ID}-${env.BRANCH_NAME}"
 				sh "docker build --force-rm --no-cache --pull --rm=true -t ${DOCKER_IMAGE_PATH} ."
-				sh "docker login docker.optum.com -u ${env.MAVEN_USER} -p ${env.MAVEN_PASS}"
+				sh "docker login -u ${env.MAVEN_USER} -p ${env.MAVEN_PASS} docker.optum.com"
 				sh "echo 'DOCKER_IMAGE_PATH :${DOCKER_IMAGE_PATH}'"
 				sh "docker push ${DOCKER_IMAGE_PATH}"
-				sh "docker imnages"
+				sh "docker images"
 				
 				sh "docker run -P ${env.DOCKER_ORG}/${DOCKER_REPO} info"
 			}
