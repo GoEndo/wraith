@@ -41,7 +41,8 @@ node {
 		if (runMode.equalsIgnoreCase("history")) {
 			withUsernameAndPassword(credentialsId, 'MAVEN_USER', 'MAVEN_PASS') {
 				withEnv(["PATH+=${tool 'docker'}"]) {
-					sh "docker run -d -P --name='${CONTAINER_ID}' docker.optum.com/${env.DOCKER_ORG}/${DOCKER_REPO} history ${config}"
+					sh "pwd"
+					sh "docker run -d -P --name='${CONTAINER_ID}'  -v '.:/wraithy' -w='/wraithy' docker.optum.com/${env.DOCKER_ORG}/${DOCKER_REPO} history ${config}"
 					sh "echo ${CONTAINER_ID}"
 					sh "docker logs --follow ${CONTAINER_ID}"
 				}
