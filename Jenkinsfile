@@ -11,7 +11,7 @@ def gitHubRepoUrl = 'https://github.optum.com/gendo/wraith.git'
 
 def DOCKER_REPO = "wraith"
 
-
+def CONTAINER_ID = ${BUILD_TAG}.replaceAll(" ", "_")
 
 node {
     stage('GiT Clone') {
@@ -50,10 +50,10 @@ node {
 		if (!runMode?.trim() || runMode.equalsIgnoreCase("build") || runMode.equalsIgnoreCase("info")) {
 			withUsernameAndPassword(credentialsId, 'MAVEN_USER', 'MAVEN_PASS') {
 				withEnv(["PATH+=${tool 'docker'}"]) {
-					sh "container_id = `docker run -d -P --name='${BUILD_TAG}' docker.optum.com/${env.DOCKER_ORG}/${DOCKER_REPO} info`"
-					sh "echo ${container_id} ${BUILD_TAG}"
-					sh "docker wait ${BUILD_TAG}"
-					sh "docker logs ${BUILD_TAG}"
+					sh "container_id = `docker run -d -P --name='${CONTAINER_ID}' docker.optum.com/${env.DOCKER_ORG}/${DOCKER_REPO} info`"
+					sh "echo ${container_id} ${CONTAINER_ID}"
+					//sh "docker wait ${CONTAINER_ID}"
+					sh "docker logs --follow ${CONTAINER_ID}"
 				}
 			}
 		}
