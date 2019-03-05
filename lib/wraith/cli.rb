@@ -24,9 +24,13 @@ class Wraith::CLI < Thor
 
   desc "validate [config_name]", "checks your configuration and validates that all required properties exist"
   def validate(config_name)
+    logger.info Dir["./*"].inspect
+
     within_acceptable_limits do
       logger.info Wraith::Validate.new(config_name).validate
     end
+    
+    logger.info Dir["./*"].inspect
   end
 
   desc "setup", "creates config folder and default config"

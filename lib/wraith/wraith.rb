@@ -45,8 +45,6 @@ class Wraith::Wraith
       end
     end
     
-    logger.info Dir["./*"].inspect
-    
     fail ConfigFileDoesNotExistError, "unable to find config \"#{config_name}\""
   end
 
