@@ -11,7 +11,7 @@ def gitHubRepoUrl = 'https://github.optum.com/gendo/wraith.git'
 
 def DOCKER_REPO = "wraith"
 
-def CONTAINER_ID = ${BUILD_TAG}.replaceAll(" ", "_")
+def CONTAINER_ID = "${BUILD_TAG}".replaceAll(" ", "_")
 
 node {
     stage('GiT Clone') {
