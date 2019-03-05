@@ -38,7 +38,7 @@ class Wraith::Wraith
       "configs/#{config_name}.yaml"
     ]
     
-    logger.debug Dir["./*"].inspect
+    logger.info Dir["./*"].inspect
 
     possible_filenames.each do |filepath|
       if File.exist?(filepath)
