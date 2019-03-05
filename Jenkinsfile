@@ -44,7 +44,6 @@ node {
 					sh "workspace=`pwd`"
 					sh "ls -al configs"
 					sh "docker run -d -P --name='${CONTAINER_ID}' -v '${workspace}:/wraithy' -w='/wraithy' docker.optum.com/${env.DOCKER_ORG}/${DOCKER_REPO} history ${config}"
-					sh "echo ${CONTAINER_ID}"
 					sh "docker logs --follow ${CONTAINER_ID}"
 				}
 			}
@@ -55,12 +54,10 @@ node {
 			withUsernameAndPassword(credentialsId, 'MAVEN_USER', 'MAVEN_PASS') {
 				withEnv(["PATH+=${tool 'docker'}"]) {
 					sh "docker run -d -P --name='${CONTAINER_ID}-info' docker.optum.com/${env.DOCKER_ORG}/${DOCKER_REPO} info"
-					sh "echo ${CONTAINER_ID}"
-					sh "docker logs --follow ${CONTAINER_ID}"
+					sh "docker logs --follow ${CONTAINER_ID}-info"
 
 					sh "docker run -d -P --name='${CONTAINER_ID}-validate' -v '${workspace}:/wraithy' -w='/wraithy' docker.optum.com/${env.DOCKER_ORG}/${DOCKER_REPO} validate ${config}"
-					sh "echo ${CONTAINER_ID}"
-					sh "docker logs --follow ${CONTAINER_ID}"				}
+					sh "docker logs --follow ${CONTAINER_ID}-validate"				}
 			}
 		}
 	}
