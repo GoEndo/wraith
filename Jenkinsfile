@@ -33,11 +33,6 @@ node {
 					sh "echo 'DOCKER_IMAGE_PATH :${DOCKER_IMAGE_PATH}'"
 					sh "docker push ${DOCKER_IMAGE_PATH}"
 					sh "docker push docker.optum.com/${env.DOCKER_ORG}/${DOCKER_REPO}:latest"
-				
-					sh "container_id = `docker run -d -rm -P --name=${BUILD_TAG} docker.optum.com/${env.DOCKER_ORG}/${DOCKER_REPO} info`"
-					sh "echo ${container_id} ${BUILD_TAG}"
-					sh "docker wait ${BUILD_TAG}"
-					sh "docker logs ${BUILD_TAG}"
 				}
 			}
 		}
@@ -51,8 +46,8 @@ node {
 			}
 		}
 	}
-	stage ('Build Baseline') {
-		if (runMode.equalsIgnoreCase("info")) {
+	stage ('Info') {
+		if (!runMode?.trim() || runMode.equalsIgnoreCase("build") || runMode.equalsIgnoreCase("info")) {
 			withUsernameAndPassword(credentialsId, 'MAVEN_USER', 'MAVEN_PASS') {
 				withEnv(["PATH+=${tool 'docker'}"]) {
 					sh "container_id = `docker run -d -rm -P --name=${BUILD_TAG} docker.optum.com/${env.DOCKER_ORG}/${DOCKER_REPO} info`"
