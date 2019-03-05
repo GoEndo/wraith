@@ -23,7 +23,7 @@ node {
     }
     
 	stage ('Build') {
-		if (!runMode?.trim() || runMode.equalsIgnoreCase("build")) {
+		if (runMode.equalsIgnoreCase("build")) {
 			withUsernameAndPassword(credentialsId, 'MAVEN_USER', 'MAVEN_PASS') {
 				withEnv(["PATH+=${tool 'docker'}"]) {
 
@@ -50,7 +50,7 @@ node {
 		}
 	}
 	stage ('Info') {
-		if (!runMode?.trim() || runMode.equalsIgnoreCase("build") || runMode.equalsIgnoreCase("info")) {
+		if (runMode.equalsIgnoreCase("build") || runMode.equalsIgnoreCase("info")) {
 			withUsernameAndPassword(credentialsId, 'MAVEN_USER', 'MAVEN_PASS') {
 				withEnv(["PATH+=${tool 'docker'}"]) {
 					sh "docker run -d -P --name='${CONTAINER_ID}-info' docker.optum.com/${env.DOCKER_ORG}/${DOCKER_REPO} info"
