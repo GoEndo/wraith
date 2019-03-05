@@ -14,13 +14,25 @@ class Wraith::CompareImages
   end
 
   def compare_images
-    files = Dir.glob("#{wraith.directory}/*/*.png").sort
-    Parallel.each(files.each_slice(2), :in_processes => Parallel.processor_count) do |base, compare|
-      diff = base.gsub(/([a-zA-Z0-9]+).png$/, "diff.png")
-      info = base.gsub(/([a-zA-Z0-9]+).png$/, "data.txt")
-      logger.info "Comparing #{base} and #{compare}"
-      compare_task(base, compare, diff, info)
-      logger.info "Saved diff"
+  	folders = Dir.glob("#{wraith.directory}/*").select {|f| File.directory? f}
+  	folders.each do |folder|
+	  	bases = []
+		files = Dir.glob(folder + "/*.png")
+		files.each do |file|
+			if file.end_with?('_latest.png')
+				file.slice!('_latest')
+			end
+			
+			bases << file unless bases.include?(file)
+		end
+		
+		Parallel.each(bases, :in_processes => Parallel.processor_count) do |base|
+		  diff = base.gsub(/.png$/, "_diff.png")
+		  info = base.gsub(/.png$/, "_data.txt")
+		  compare = base.gsub(/.png$/, "_latest.png")
+		  logger.info "Comparing #{base} and #{compare}"
+		  compare_task(base, compare, diff, info)
+	   	end
     end
   end
 

@@ -221,13 +221,13 @@
                 <a class="shot" href="<%= ERB::Util.url_encode file[:filename]%>">
                   <img class="short-screenshot img-thumbnail" src="<%= ERB::Util.url_encode path%><%= ERB::Util.url_encode file[:thumb]%>">
                 </a>
-                <p class="text-center"><a target="_blank" href="<%= ERB::Util.url_encode file[:url]%>"><%=file[:name]%></a></p>
+                <p class="text-center"><a target="_blank" href="<%=file[:url]%>"><%=file[:name]%></a></p>
               </div>
               <% end %>
               <div class="col-sm-4">
                 <% if files[:diff] %>
                 <a class="shot" href="<%= ERB::Util.url_encode files[:diff][:filename]%>">
-                  <img class="short-screenshot img-thumbnail" src="<%= ERB::Util.url_encode  ERB::Util.url_encode path%><%= ERB::Util.url_encode files[:diff][:thumb]%>">
+                  <img class="short-screenshot img-thumbnail" src="<%= ERB::Util.url_encode path%><%= ERB::Util.url_encode files[:diff][:thumb]%>">
                 </a>
                 <% end %>
                 <p class="text-center">diff</p>

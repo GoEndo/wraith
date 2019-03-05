@@ -110,7 +110,8 @@ class Wraith::GalleryGenerator
   end
 
   def data_check(size_dict, dirname, filepath)
-    size_dict[:data] = File.read("#{dirname}/#{filepath}").to_f
+    data = File.read("#{dirname}/#{filepath}")
+    size_dict[:data] = data.casecmp('invalid').zero? ? 100.0 : data.to_f
   end
 
   def sorting_dirs(dirs)
