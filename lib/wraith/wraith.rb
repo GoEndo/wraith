@@ -45,7 +45,7 @@ class Wraith::Wraith
       end
     end
     
-    fail ConfigFileDoesNotExistError, "unable to find config \"#{config_name}\""
+    fail ConfigFileDoesNotExistError, " still unable to find config \"#{config_name}\""
   end
 
   def config_dir
