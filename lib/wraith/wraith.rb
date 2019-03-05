@@ -37,8 +37,6 @@ class Wraith::Wraith
       "configs/#{config_name}.yml",
       "configs/#{config_name}.yaml"
     ]
-    
-    logger.info Dir["./*"].inspect
 
     possible_filenames.each do |filepath|
       if File.exist?(filepath)
@@ -46,7 +44,9 @@ class Wraith::Wraith
         return convert_to_absolute filepath
       end
     end
-
+    
+    logger.info Dir["./*"].inspect
+    
     fail ConfigFileDoesNotExistError, "unable to find config \"#{config_name}\""
   end
 
