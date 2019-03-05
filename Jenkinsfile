@@ -22,8 +22,8 @@ node {
 
     }
     
-	if (!runMode?.trim() || runMode.equalsIgnoreCase("build")) {
-		stage ('Build') {
+	stage ('Build') {
+		if (!runMode?.trim() || runMode.equalsIgnoreCase("build")) {
 			withUsernameAndPassword(credentialsId, 'MAVEN_USER', 'MAVEN_PASS') {
 				withEnv(["PATH+=${tool 'docker'}"]) {
 
@@ -34,26 +34,28 @@ node {
 					sh "docker push ${DOCKER_IMAGE_PATH}"
 					sh "docker push docker.optum.com/${env.DOCKER_ORG}/${DOCKER_REPO}:latest"
 				
-					sh "container_id = docker container run -d -rm -P --name=${BUILD_TAG} docker.optum.com/${env.DOCKER_ORG}/${DOCKER_REPO} info"
+					sh "container_id = $(docker container run -d -rm -P --name=${BUILD_TAG} docker.optum.com/${env.DOCKER_ORG}/${DOCKER_REPO} info)"
 					sh "echo ${container_id} ${BUILD_TAG}"
 					sh "docker wait ${BUILD_TAG}"
 					sh "docker logs ${BUILD_TAG}"
 				}
 			}
 		}
-	} else if (runMode.equalsIgnoreCase("history")) {
-		stage ('Build Baseline') {
+	}
+	stage ('Build Baseline') {
+		if (runMode.equalsIgnoreCase("history")) {
 			withUsernameAndPassword(credentialsId, 'MAVEN_USER', 'MAVEN_PASS') {
 				withEnv(["PATH+=${tool 'docker'}"]) {
 					sh "docker run -P docker.optum.com/${env.DOCKER_ORG}/${DOCKER_REPO} history ${config}"
 				}
 			}
 		}
-	} else if (runMode.equalsIgnoreCase("info")) {
-		stage ('Build Baseline') {
+	}
+	stage ('Build Baseline') {
+		if (runMode.equalsIgnoreCase("info")) {
 			withUsernameAndPassword(credentialsId, 'MAVEN_USER', 'MAVEN_PASS') {
 				withEnv(["PATH+=${tool 'docker'}"]) {
-					sh "container_id = docker container run -d -rm -P --name=${BUILD_TAG} docker.optum.com/${env.DOCKER_ORG}/${DOCKER_REPO} info"
+					sh "container_id = $(docker container run -d -rm -P --name=${BUILD_TAG} docker.optum.com/${env.DOCKER_ORG}/${DOCKER_REPO} info)"
 					sh "echo ${container_id} ${BUILD_TAG}"
 					sh "docker wait ${BUILD_TAG}"
 					sh "docker logs ${BUILD_TAG}"
