@@ -3,6 +3,7 @@
 @Library("ucp-global-library") _
 
 def runMode = "${env.RUN_MODE}"
+def config = "${env.CONFIG}"
 
 def gitBranch = "${env.BRANCH_NAME}"
 def credentialsId = 'c35e98d4-5b20-4607-854e-ddc6f0fd8ba4'
@@ -22,7 +23,6 @@ node {
     }
     
 	if (runMode?.trim() || runMode.equalsIgnoreCase("build")) {
-
 		stage ('Build') {
 			withUsernameAndPassword(credentialsId, 'MAVEN_USER', 'MAVEN_PASS') {
 				withEnv(["PATH+=${tool 'docker'}"]) {
@@ -35,6 +35,14 @@ node {
 					sh "docker push docker.optum.com/${env.DOCKER_ORG}/${DOCKER_REPO}:latest"
 				
 					sh "docker run -P docker.optum.com/${env.DOCKER_ORG}/${DOCKER_REPO} info"
+				}
+			}
+		}
+	} else if (runMode.equalsIgnoreCase("history")) {
+		stage ('Build Baseline') {
+			withUsernameAndPassword(credentialsId, 'MAVEN_USER', 'MAVEN_PASS') {
+				withEnv(["PATH+=${tool 'docker'}"]) {
+					sh "docker run -P docker.optum.com/${env.DOCKER_ORG}/${DOCKER_REPO} history ${config}"
 				}
 			}
 		}
