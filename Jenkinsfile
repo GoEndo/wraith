@@ -51,7 +51,7 @@ node {
 			withUsernameAndPassword(credentialsId, 'MAVEN_USER', 'MAVEN_PASS') {
 				withEnv(["PATH+=${tool 'docker'}"]) {
 					sh "docker run -d -P --name='${CONTAINER_ID}' docker.optum.com/${env.DOCKER_ORG}/${DOCKER_REPO} info"
-					sh "echo ${container_id} ${CONTAINER_ID}"
+					sh "echo ${CONTAINER_ID}"
 					//sh "docker wait ${CONTAINER_ID}"
 					sh "docker logs --follow ${CONTAINER_ID}"
 				}
