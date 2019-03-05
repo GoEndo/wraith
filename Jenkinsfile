@@ -49,7 +49,6 @@ node {
 				}
 			}
 		}
-	}
 	} else if (runMode.equalsIgnoreCase("info")) {
 		stage ('Build Baseline') {
 			withUsernameAndPassword(credentialsId, 'MAVEN_USER', 'MAVEN_PASS') {
