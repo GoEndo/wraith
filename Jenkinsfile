@@ -21,7 +21,7 @@ node {
 
     }
     
-	if (runMode == null || runMode.equalsIgnoreCase("build")) {
+	if (runMode?.trim() || runMode.equalsIgnoreCase("build")) {
 
 		stage ('Build') {
 			withUsernameAndPassword(credentialsId, 'MAVEN_USER', 'MAVEN_PASS') {
