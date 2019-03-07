@@ -26,6 +26,7 @@ node {
 		if (runMode.equalsIgnoreCase("build")) {
 			withUsernameAndPassword(credentialsId, 'MAVEN_USER', 'MAVEN_PASS') {
 				withEnv(["PATH+=${tool 'docker'}"]) {
+					sh "gem build wraith.gemspec"
 
 					def DOCKER_IMAGE_PATH = "docker.optum.com/${env.DOCKER_ORG}/${DOCKER_REPO}:${DOCKER_REPO}-${env.BUILD_ID}-${env.BRANCH_NAME}"
 					sh "docker build --force-rm --no-cache --pull --rm=true -t ${DOCKER_IMAGE_PATH} -t docker.optum.com/${env.DOCKER_ORG}/${DOCKER_REPO}:latest ."
