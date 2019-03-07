@@ -14,7 +14,7 @@ RUN apt-get install -y libfreetype6 libfontconfig1 nodejs libnss3-dev libgconf-2
 RUN npm install npm
 RUN npm install -g phantomjs --unsafe-perm
 RUN npm install -g casperjs
-RUN gem install wraith --no-rdoc --no-ri
+RUN gem install wraith --no-rdoc --no-ri --local
 RUN gem install aws-sdk --no-rdoc --no-ri
 
 # Make sure decent fonts are installed. Thanks to http://www.dailylinuxnews.com/blog/2014/09/things-to-do-after-installing-debian-jessie/
