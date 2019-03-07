@@ -1,34 +1,40 @@
-# coding: utf-8
-lib = File.expand_path('../lib', __FILE__)
+
+lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'wraith/version'
+require "wraith/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = 'wraith'
+  spec.name          = "wraith"
   spec.version       = Wraith::VERSION
-  spec.authors       = ['Dave Blooman', 'Simon Thulbourn', 'Chris Ashton']
-  spec.email         = ['david.blooman@gmail.com', 'simon+github@thulbourn.com', 'chrisashtonweb@gmail.com']
+  spec.authors       = ["Go Endo"]
+  spec.email         = ["go.endo@icloud.com"]
+
   spec.summary       = 'Wraith screenshot comparison tool'
-  spec.description   = 'Wraith is a screenshot comparison tool, created by developers at BBC News.'
-  spec.homepage      = 'https://github.com/BBC-News/wraith'
-  spec.license       = 'Apache-2.0'
+  spec.homepage      = "https://github.com/GoEndo/wraith"
+  spec.license       = "MIT"
 
-  spec.files         = `git ls-files`.split($INPUT_RECORD_SEPARATOR)
-  spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
-  spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
-  spec.require_paths = ['lib']
+  # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
+  # to allow pushing to a single host or delete this section to allow pushing to any host.
+  if spec.respond_to?(:metadata)
+    spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
 
-  spec.add_development_dependency 'rspec'
-  # spec.add_development_dependency 'casperjs'
+    spec.metadata["homepage_uri"] = spec.homepage
+    spec.metadata["source_code_uri"] = "https://github.com/GoEndo/wraith"
+    spec.metadata["changelog_uri"] = "https://github.com/GoEndo/wraith"
+  else
+    raise "RubyGems 2.0 or newer is required to protect against " \
+      "public gem pushes."
+  end
 
-  spec.add_runtime_dependency 'rake'
-  spec.add_runtime_dependency 'image_size'
-  spec.add_runtime_dependency 'mini_magick', "~> 4.8"
-  spec.add_runtime_dependency 'anemone'
-  spec.add_runtime_dependency 'robotex'
-  spec.add_runtime_dependency 'log4r'
-  spec.add_runtime_dependency 'thor'
-  spec.add_runtime_dependency 'parallel'
-  spec.add_runtime_dependency 'selenium-webdriver', "~> 3.5"
-  spec.add_runtime_dependency 'chromedriver-helper', "~> 1.1"
+  # Specify which files should be added to the gem when it is released.
+  # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
+  spec.files         = Dir.chdir(File.expand_path('..', __FILE__)) do
+    `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
+  end
+  spec.bindir        = "exe"
+  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  spec.require_paths = ["lib"]
+
+  spec.add_development_dependency "bundler", "~> 2.0"
+  spec.add_development_dependency "rake", "~> 10.0"
 end
