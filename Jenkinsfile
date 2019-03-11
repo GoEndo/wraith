@@ -26,6 +26,7 @@ node {
 		if (runMode.equalsIgnoreCase("build")) {
 			withUsernameAndPassword(credentialsId, 'MAVEN_USER', 'MAVEN_PASS') {
 				withEnv(["PATH+=${tool 'docker'}"]) {
+					sh "which rbenv"
 					sh "rbenv install 2.5.1"
 					sh "rbenv local 2.5.1"
 					sh "gem build wraith.gemspec"
