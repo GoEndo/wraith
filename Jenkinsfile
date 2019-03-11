@@ -26,6 +26,8 @@ node {
 		if (runMode.equalsIgnoreCase("build")) {
 			withUsernameAndPassword(credentialsId, 'MAVEN_USER', 'MAVEN_PASS') {
 				withEnv(["PATH+=${tool 'docker'}"]) {
+					sh "rbenv install 2.5.1"
+					sh "rbenv local 2.5.1"
 					sh "gem build wraith.gemspec"
 
 					def DOCKER_IMAGE_PATH = "docker.optum.com/${env.DOCKER_ORG}/${DOCKER_REPO}:${DOCKER_REPO}-${env.BUILD_ID}-${env.BRANCH_NAME}"
