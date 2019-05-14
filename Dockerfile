@@ -1,7 +1,9 @@
 FROM ruby:2.5.1
 
 RUN groupadd -g 999 appuser && \
-    useradd -r -u 999 -g appuser appuser
+    useradd -r -u 999 -g appuser appuser && \
+    mkdir -p /home/appuser && \
+    chmod 777 /home/appuser
 
 # some of ruby's build scripts are written in ruby
 # we purge this later to make sure our final image uses what we just built
