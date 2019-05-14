@@ -16,6 +16,8 @@ RUN apt-get install -y libfreetype6 libfontconfig1 nodejs libnss3-dev libgconf-2
 RUN npm install npm
 RUN npm install -g phantomjs --unsafe-perm
 RUN npm install -g casperjs
+COPY . ./ 
+RUN gem build wraith.gemspec
 RUN gem install wraith --no-rdoc --no-ri --local
 RUN gem install aws-sdk --no-rdoc --no-ri
 
